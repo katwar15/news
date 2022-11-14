@@ -8,6 +8,7 @@ import { auth } from "../../firebaseConfig";
 const RegisterPage = () => {
   // destrukturyzacja obiektu:
   const { register, handleSubmit } = useForm<RegisterFormData>();
+  // tutaj <RegisterFormData> to TYP GENERYCZNY
 
   const registerUser = ({ email, password, password2 }: RegisterFormData) => {
     // NIE UŻYWAJ LINKóW GSTATIC DO IMPORTOW Z FB, MOŻESZ UŻYC NP. firebase/app, firebase/auth
@@ -21,7 +22,9 @@ const RegisterPage = () => {
       createUserWithEmailAndPassword(auth, email, password)
         // mamy promisa, którego będziemy obsługiwać za pomocą then'a
 
-        .then(() => console.log("Success"))
+        .then(() => {
+          console.log("Success");
+        })
         .catch((err) => console.log(err));
     } else {
       console.log("hasla sie nie zgadzaja");
@@ -49,6 +52,7 @@ const RegisterPage = () => {
           placeholder="password"
           sx={{ display: "block", mx: "auto", my: ".5rem" }}
           {...register("password", { required: true })}
+          // ten spread tutaj jest tutaj, bo funkcja zwróci listę atrybutów
         ></TextField>
         <TextField
           type="password"

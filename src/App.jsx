@@ -3,7 +3,8 @@ import Navbar from "./components/Navbar/Navbar";
 import HomePage from "./components/HomePage/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
-import RateUsPage from "./components/RateUsPage/RateUsPage";
+import RateUsPage from "./components/Rate/RateUsPage/RateUsPage";
+import LoginPage from "./components/LoginPage/LoginPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/rateus" element={<RateUsPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
         {/* ---- */}
         {/* tu poniżej znow kompo, ktore maja sie wyswietlac caly czas - np. footer  */}
