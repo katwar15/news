@@ -4,7 +4,7 @@ export interface articleObj {
   title: string;
 }
 export interface ArticleProps {
-  todaysArticles: articleObj;
+  art: articleObj;
   key: string;
 }
 
@@ -17,4 +17,20 @@ export interface RegisterFormData {
 export interface LoginFormData {
   email: string;
   password: string;
+}
+
+export interface NavBarProps {
+  loggedIn: boolean;
+}
+
+export interface ProfilePhotoFormData {
+  profilePhotoList: FileList;
+}
+
+export interface SearchFormProps {
+  keyword: string;
+}
+
+export interface SetKeyword {
+  setKeyword: (value: string) => void;
 }

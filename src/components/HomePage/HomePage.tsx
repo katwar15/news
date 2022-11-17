@@ -34,6 +34,7 @@ const HomePage = () => {
         setTodaysArticles(response.data.articles);
       })
       .catch((err) => console.error(err.message));
+
     // 1. Stwórz stan todaysArticles (funckja aktualizujaca stan będzie sie
     // nazywala setTodaysArticles), wartość początkowa: [] (pusta lista)
     // 2. Do axios.get dopisz thena, w którym wrzucisz zwrócone z API dane do stanu todaysArticles
@@ -85,7 +86,7 @@ const HomePage = () => {
       <List sx={{ width: "100%", align: "center" }}>
         {todaysArticles.length !== 0 &&
           todaysArticles.map((article: articleObj) => {
-            return <Article todaysArticles={article} key={article.title} />;
+            return <Article art={article} key={article.title} />;
           })}
       </List>
     </>

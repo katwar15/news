@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { authContext } from "../../helpers/authContex";
 // chcesz mieć reaktywność
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -11,6 +13,8 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import { auth, storage } from "../../firebaseConfig";
+import { ref, getDownloadURL } from "firebase/storage";
 
 const pages = ["Home", "Search", "Rate Us"];
 
@@ -24,6 +28,28 @@ const Navbar = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const loggedIn = useContext(authContext);
+
+  const [profilePhoto, setProfilePhoto] = useState("/");
+  // 1. Stwórz stan profilePhoto (useState), wartość początkowa: '/'
+  // 2. Wywołanie useEffect. Zapełniona lista dependencji, reaguj na zmiane loggedIn
+  // W UE:
+  // 3. Stwórz ifa w którym sprawdziś czy loggedIn jest prawdziwy i czy auth.currentUser jest prawdziwe.
+  // W ifie:
+  // 4. Stwórz refa do storagu (1:1 taki sam jak w poprzednim zadaniu)
+  // 5. Wywołanie funkcji getDownloadURL, funkcja przyjmuje jako argument tylko ref do storagu (pkt 4)
+  // 6. Przypnij thena do funkcji z pkt 5, w thenie wpisz w parametr "url", po czym tego urla wrzuć do stanu profilePhoto
+  // .then((url) => setProfilePhoto(url))
+  // 7. Dopisz catcha
+  // 8. Wstaw stan profilePhoto w atrybut src Avatara (111)
+  useEffect(() => {
+    if (loggedIn && auth.currentUser) {
+      const storageRef = ref(storage, `/users/${auth.currentUser.uid}/profile`);
+      getDownloadURL(storageRef)
+        .then((url) => setProfilePhoto(url))
+        .catch((err) => console.error(err.message));
+    }
+  }, [loggedIn]);
 
   return (
     <AppBar position="static">
@@ -58,8 +84,6 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {/* const pages = ["Home", "Search", "About"];
-               */}
               {pages.map((page) => (
                 <Link
                   key={page}
@@ -93,10 +117,19 @@ const Navbar = () => {
           </Typography>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Link to="/login" style={{ textDecoration: "none" }}>
-              <IconButton sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+            <Link
+              to={loggedIn ? "/user" : "/login"}
+              style={{ textDecoration: "none" }}
+            >
+              {loggedIn ? (
+                <IconButton sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src={profilePhoto} />
+                </IconButton>
+              ) : (
+                <Button sx={{ my: "2", color: "white", display: "block" }}>
+                  Log In
+                </Button>
+              )}
             </Link>
           </Box>
         </Toolbar>
